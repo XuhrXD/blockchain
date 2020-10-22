@@ -44,7 +44,7 @@ contract DAOInterface {
 contract DAO is DAOInterface{
     
     function Deposit() external payable returns (bool success){
-        
+        investors[msg.sender] = true;
         if (proposals[proposalIndex].issealed == false){
             if (proposals[proposalIndex].yes[msg.sender] == true)
             {
@@ -138,7 +138,7 @@ contract DAO is DAOInterface{
     }
     
     function _changeValuation() internal{
-        uint random_number = uint(blockhash(block.number-1))%100;
+        uint random_number = uint256(keccak256(abi.encodePacked(block.difficulty, now)))%100;
         valuation = valuation * (random_number/10);
         if (valuation == 0 ) {
             totalBalance = 0;
@@ -160,5 +160,3 @@ contract DAO is DAOInterface{
 
         
         
-    
-    
